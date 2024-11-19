@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -449,7 +449,7 @@ namespace QLNet
       public static double basisPointValue(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                            Date settlementDate = null)
       {
-         return CashFlows.basisPointValue(bond.cashflows(), new InterestRate(yield, dayCounter, compounding, frequency), false, settlementDate);
+         return basisPointValue(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
       public static double yieldValueBasisPoint(Bond bond, InterestRate yield, Date settlementDate = null)
       {
@@ -467,7 +467,7 @@ namespace QLNet
       public static double yieldValueBasisPoint(Bond bond, double yield, DayCounter dayCounter, Compounding compounding,
                                                 Frequency frequency, Date settlementDate = null)
       {
-         return CashFlows.yieldValueBasisPoint(bond.cashflows(), new InterestRate(yield, dayCounter, compounding, frequency), false, settlementDate);
+         return yieldValueBasisPoint(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
       #endregion
 

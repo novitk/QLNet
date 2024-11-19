@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -251,6 +251,16 @@ namespace TestSuite
          Xunit.Assert.Throws<T>(action);
       }
 
+      public static void Close(string name, Date settlement, double calculated, double expected, double tolerance)
+      {
+         if (Math.Abs(calculated - expected) > tolerance)
+         {
+            Fail(name + " calculation failed: "
+                         + "\n    at:     " + settlement
+                         + "\n    calculated:  " + calculated
+                         + "\n    expected:    " + expected);
+         }
+      }
    }
 
    public struct SwaptionTenors

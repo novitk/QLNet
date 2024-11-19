@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -1986,5 +1986,58 @@ namespace TestSuite
 
          QAssert.AreEqual(expectedYield, bey, delta);
       }
+
+      [Theory]
+      [InlineData("", -795.459834, -0.0012571287)]
+      [InlineData("01/30/2024", -795.459834, -0.0012571287)]
+      [InlineData("02/12/2024", -793.149033, -0.0012607913)]
+      public void testBasisPointValue(string settlementDate,  double bpv, double yvbp)
+      {
+         const double tolerance = 1e-6;
+
+         Date settlement = null;
+         if (settlementDate != string.Empty)
+            settlement = Convert.ToDateTime(settlementDate, new CultureInfo("en-US"));
+
+         // Testing consistency of bond basisPointValue and yieldValueBasisPoint calculations
+         var vars = new CommonVars();
+         var today = new Date(29, Month.January, 2024);
+         Settings.setEvaluationDate(today);
+
+         var datedDate = new Date(15, Month.November, 2023);
+         var maturity = new Date(15, Month.August, 2033);
+
+         DayCounter dayCounter = new Thirty360(Thirty360.Thirty360Convention.USA);
+         var compounding = Compounding.Compounded;
+         var frequency = Frequency.Semiannual;
+         var period = new Period(frequency);
+
+         var fixedBondSchedule= new Schedule(datedDate, maturity, period,
+            new UnitedStates(UnitedStates.Market.GovernmentBond), BusinessDayConvention.Unadjusted,
+            BusinessDayConvention.Unadjusted, DateGeneration.Rule.Forward, false);
+
+         var fixedRateBond = new FixedRateBond(1, vars.faceAmount, fixedBondSchedule,
+            [0.045], dayCounter, BusinessDayConvention.Unadjusted, 100.0);
+
+         var defaultSettlement = fixedRateBond.settlementDate();
+         var cleanPrice = new Bond.Price(102.890625, Bond.Price.Type.Clean);
+
+         var yield = BondFunctions.yield(fixedRateBond, cleanPrice.amount(), dayCounter, compounding, frequency);
+         QAssert.Close("yield", defaultSettlement, yield, 0.041301, tolerance);
+
+         var bpv1 = BondFunctions.basisPointValue(fixedRateBond, yield, dayCounter, compounding, frequency, settlement);
+         QAssert.Close("basisPointValue from yield", settlement, bpv1, bpv, tolerance);
+
+         var bpv2 = BondFunctions.basisPointValue(fixedRateBond, new InterestRate(yield, dayCounter, compounding, frequency), settlement);
+         QAssert.Close("basisPointValue from InterestRate", settlement, bpv2, bpv, tolerance);
+
+         var yvbp1 = BondFunctions.yieldValueBasisPoint(fixedRateBond, yield, dayCounter, compounding, frequency, settlement);
+         yvbp1 *= vars.faceAmount;
+         QAssert.Close("yieldValueBasisPoint from yield", settlement, yvbp1, yvbp, tolerance);
+
+         var yvbp2 = BondFunctions.yieldValueBasisPoint(fixedRateBond, new InterestRate(yield, dayCounter, compounding, frequency), settlement);
+         yvbp2 *= vars.faceAmount;
+         QAssert.Close("yieldValueBasisPoint from InterestRate", settlement, yvbp2, yvbp, tolerance);
+     }
    }
 }
