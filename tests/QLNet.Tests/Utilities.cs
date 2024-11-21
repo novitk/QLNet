@@ -184,7 +184,7 @@ namespace TestSuite
 
       public static void Fail(string message)
       {
-         Assert.Fail(message);
+         Assert.True(false, message);
       }
 
       public static void AreEqual(double expected, double actual, double delta)
