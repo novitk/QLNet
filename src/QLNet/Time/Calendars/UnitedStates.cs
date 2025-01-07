@@ -469,7 +469,9 @@ namespace QLNet
                      (d == 3 && w == DayOfWeek.Friday)) && m == Month.July)
                 // Christmas (Monday if Sunday or Friday if Saturday)
                 || ((d == 25 || (d == 26 && w == DayOfWeek.Monday) ||
-                     (d == 24 && w == DayOfWeek.Friday)) && m == Month.December))
+                     (d == 24 && w == DayOfWeek.Friday)) && m == Month.December)
+                // Jimmy Carter Day of Mourning- Jan 9th 2025
+                || ( d == 9 && m == Month.January && y == 2025))
                return true;
 
             // Thanksgiving Day the early close is the following friday
