@@ -47,8 +47,8 @@ namespace QLNet
       {
          n_ = n;
 
-         xBegin2_ = xBegin.GetRange(n_, xBegin.Count);
-         yBegin2_ = yBegin.GetRange(n_, yBegin.Count);
+         xBegin2_ = xBegin.GetRange(n_, xBegin.Count - n_);
+         yBegin2_ = yBegin.GetRange(n_, yBegin.Count - n_);
 
          Utils.QL_REQUIRE(xBegin2_.Count < size_, () => "too large n (" + n + ") for " + size_ + "-element x sequence");
 
@@ -59,8 +59,8 @@ namespace QLNet
                interpolation2_ = factory2.interpolate(xBegin_, size_, yBegin_);
                break;
             case Behavior.SplitRanges:
-               interpolation1_ = factory1.interpolate(xBegin_, xBegin2_.Count + 1, yBegin_);
-               interpolation2_ = factory2.interpolate(xBegin2_, size_, yBegin2_);
+               interpolation1_ = factory1.interpolate(xBegin_, n_, yBegin_);
+               interpolation2_ = factory2.interpolate(xBegin2_, size_ - n, yBegin2_);
                break;
             default:
                Utils.QL_FAIL("unknown mixed-interpolation behavior: " + behavior);
@@ -137,7 +137,7 @@ namespace QLNet
 
    //! mixed linear/cubic interpolation factory and traits
    /*! \ingroup interpolations */
-   public class MixedLinearCubic
+   public class MixedLinearCubic: IInterpolationFactory
    {
       public MixedLinearCubic(int n,
                               Behavior behavior,
