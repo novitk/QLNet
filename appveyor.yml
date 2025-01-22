@@ -21,7 +21,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\net8.0\QLNet.dll
+    - path: src\QLNet\bin\Release\net9.0\QLNet.dll
       name: Windows
     - path: .\*.nupkg
       name: ng
@@ -32,7 +32,7 @@
     description: QLNet 1.13.1
     auth_token:
       secure: 4cCBgQRwNh1N6VbvMJTCUDVyo4z4acn5q6z4PXSgW5wOA0M2e6alGZms4fBx5Vw+6W8FieXgzRUvUfxmJ/xAnjxJZAFMeqI0mifvwMxjW9JAVC3EcFnV4NNZX/QoQRk6
-    artifact: src\QLNet\bin\Release\net8.0\QLNet.dll
+    artifact: src\QLNet\bin\Release\net9.0\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
