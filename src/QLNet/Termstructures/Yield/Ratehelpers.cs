@@ -18,6 +18,8 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System;
+
 namespace QLNet
 {
    //! Rate helper for bootstrapping over interest-rate futures prices
@@ -353,6 +355,14 @@ namespace QLNet
    // Rate helper for bootstrapping over deposit rates
    public class DepositRateHelper : RelativeDateRateHelper
    {
+      public DepositRateHelper(Handle<Quote> rate, Func<Handle<YieldTermStructure>, OvernightIndex> indexFactory, Date pillarDate):
+         base(rate)
+      {
+         iborIndex_ = indexFactory(termStructureHandle_);
+         pillarDate_ = pillarDate;
+         initializeDates();
+      }
+
       public DepositRateHelper(Handle<Quote> rate,
                                Period tenor,
                                int fixingDays,
@@ -420,11 +430,13 @@ namespace QLNet
          earliestDate_ = iborIndex_.valueDate(referenceDate);
          fixingDate_ = iborIndex_.fixingDate(earliestDate_);
          maturityDate_ = iborIndex_.maturityDate(earliestDate_);
-         pillarDate_ = latestDate_ = latestRelevantDate_ = maturityDate_;
+         if (pillarDate_ is null)
+            pillarDate_ = latestDate_ = latestRelevantDate_ = maturityDate_;
       }
 
       private Date fixingDate_;
       private IborIndex iborIndex_;
+
       // need to init this because it is used before the handle has any link, i.e. setTermStructure will be used after ctor
       private RelinkableHandle<YieldTermStructure> termStructureHandle_ = new RelinkableHandle<YieldTermStructure>();
 
