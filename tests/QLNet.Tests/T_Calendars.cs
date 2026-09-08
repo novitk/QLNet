@@ -1808,5 +1808,13 @@ namespace TestSuite
 
       }
 
+      [Fact]
+      public void testColombiaChiquinquiraHoliday2026()
+      {
+         Calendar colombia = new Colombia();
+         QAssert.IsFalse(colombia.isBusinessDay(new Date(13, Month.July, 2026)));
+         QAssert.IsTrue(colombia.isBusinessDay(new Date(14, Month.July, 2026)));
+      }
+
    }
 }
