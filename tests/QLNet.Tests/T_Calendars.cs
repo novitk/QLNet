@@ -1819,7 +1819,7 @@ namespace TestSuite
          QAssert.IsTrue(colombia.isBusinessDay(new Date(14, Month.July, 2026)));
 
          // Not observed before 2026.
-         QAssert.IsTrue(colombia.isBusinessDay(new Date(13, Month.July, 2025)));
+         QAssert.IsTrue(colombia.isBusinessDay(new Date(14, Month.July, 2025)));
       }
 
    }
