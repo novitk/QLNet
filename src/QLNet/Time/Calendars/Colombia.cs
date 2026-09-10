@@ -123,7 +123,7 @@ namespace QLNet
                case DayOfWeek.Monday:
                   return feast;
                case DayOfWeek.Tuesday:
-                  return feast - 1;
+                  return feast + 6;
                case DayOfWeek.Wednesday:
                   return feast + 5;
                case DayOfWeek.Thursday:
