@@ -118,25 +118,7 @@ namespace QLNet
          private static Date chiquinquiraObservedDate(int year)
          {
             var feast = new Date(9, Month.July, year);
-            switch (feast.DayOfWeek)
-            {
-               case DayOfWeek.Monday:
-                  return feast;
-               case DayOfWeek.Tuesday:
-                  return feast + 6;
-               case DayOfWeek.Wednesday:
-                  return feast + 5;
-               case DayOfWeek.Thursday:
-                  return feast + 4;
-               case DayOfWeek.Friday:
-                  return feast + 3;
-               case DayOfWeek.Saturday:
-                  return feast - 1;
-               case DayOfWeek.Sunday:
-                  return feast + 1;
-               default:
-                  return feast;
-            }
+            return Date.nextWeekday(feast, DayOfWeek.Monday);
          }
       }
    }
