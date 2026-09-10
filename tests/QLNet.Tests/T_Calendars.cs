@@ -1813,7 +1813,7 @@ namespace TestSuite
       {
          Calendar colombia = new Colombia();
 
-         // Feast is July 9; observed on the following Monday (Ley Emiliani) from 2026 onward.
+         // Feast is July 9; observed on the next Monday (or the same day if already Monday, per Ley Emiliani) from 2026 onward.
          QAssert.IsTrue(colombia.isBusinessDay(new Date(9, Month.July, 2026)));
          QAssert.IsFalse(colombia.isBusinessDay(new Date(13, Month.July, 2026)));
          QAssert.IsTrue(colombia.isBusinessDay(new Date(14, Month.July, 2026)));
